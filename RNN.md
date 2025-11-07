@@ -63,7 +63,9 @@ RNN是一个“闭环”系统，当前的决策会影响到未来的决策。�
 2. **生成输出（计算 $o_t$ ）**：
     在获得新的记忆 $s_t$ 后，RNN会基于它生成该时间步的输出。
 
-    $$o_t = \text{output\_function}(V \cdot s_t + c)$$
+    $$
+    o_t = \text{output\_function}(V \cdot s_t + c)
+    $$
 
     * $V$：连接**隐藏状态** $s_t$ 到**输出层**的权重矩阵。
     * $c$：输出层的偏置项。
@@ -107,10 +109,13 @@ $$
 
 假设一个3个时间步的序列，总损失 $L = L_1 + L_2 + L_3$。
 计算 $\frac{\partial L}{\partial W_{hh}}$ 时，它等于：
+
 $$
 \frac{\partial L}{\partial W_{hh}} = \frac{\partial L_1}{\partial W_{hh}} + \frac{\partial L_2}{\partial W_{hh}} + \frac{\partial L_3}{\partial W_{hh}}
 $$
+
 我们展开其中最复杂的一项 $\frac{\partial L_3}{\partial W_{hh}}$（它体现了长期依赖）：
+
 $$
 \frac{\partial L_3}{\partial W_{hh}} = \underbrace{\frac{\partial L_3}{\partial \hat{y}_3} \frac{\partial \hat{y}_3}{\partial h_3} \frac{\partial h_3}{\partial W_{hh}}}_{\text{Path 1: 只追溯到t=3}} + \underbrace{\frac{\partial L_3}{\partial \hat{y}_3} \frac{\partial \hat{y}_3}{\partial h_3} \frac{\partial h_3}{\partial h_2} \frac{\partial h_2}{\partial W_{hh}}}_{\text{Path 2: 追溯到t=2}} + \underbrace{\frac{\partial L_3}{\partial \hat{y}_3} \frac{\partial \hat{y}_3}{\partial h_3} \frac{\partial h_3}{\partial h_2} \frac{\partial h_2}{\partial h_1} \frac{\partial h_1}{\partial W_{hh}}}_{\text{Path 3: 追溯到t=1}}
 $$
