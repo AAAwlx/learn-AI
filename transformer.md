@@ -120,7 +120,7 @@ $$\text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big)V$$
 
 得到Q矩阵乘K的转置方程的结果之后，使用Softmax将原始的矩阵转换为一组​​概率分布，即每一个单词对于其他单词的 attention 系数，公式中的 Softmax 是对矩阵的每一行进行 Softmax，即每一行的和都变为 1。
 
-Softmax 是一个数学函数，它可以将  任意一组实数  （正数、负数、零都可以）转换为一组概率分布。
+Softmax 是一个数学函数，它可以将任意一组实数（正数、负数、零都可以）转换为一组概率分布。
 公式：
 
 ![Alt text](./images/transformer/image-4.png)
