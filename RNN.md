@@ -62,18 +62,14 @@ RNN是一个“闭环”系统，当前的决策会影响到未来的决策。�
 
 2. **生成输出（计算 $o_t$ ）**：
     在获得新的记忆 $s_t$ 后，RNN会基于它生成该时间步的输出。
-    $$
-    o_t = \text{output\_function}(V \cdot s_t + c)
-    $$
+
+    $$o_t = \text{output\_function}(V \cdot s_t + c)$$
+
     * $V$：连接**隐藏状态** $s_t$ 到**输出层**的权重矩阵。
     * $c$：输出层的偏置项。
     * `output_function`：取决于任务。例如，如果是预测下一个单词（分类任务），通常是 `softmax` 函数。
 
 ### 反向传播
-
-您这个总结非常精准，完全正确！您已经抓住了RNN反向传播（BPTT）与普通前馈神经网络反向传播最核心的区别。
-
-我们来做一个清晰的对比，您会看得更明白。
 
 #### 1. 普通前馈神经网络（DNN/MLP）：**“深度”上的链式法则**
 
@@ -82,9 +78,11 @@ RNN是一个“闭环”系统，当前的决策会影响到未来的决策。�
 
 **公式示意（简化）**：
 假设一个3层网络：`输入 -> 第1层 -> 第2层 -> 输出`
+
 $$
 \frac{\partial L}{\partial W_1} = \frac{\partial L}{\partial \text{输出}} \cdot \frac{\partial \text{输出}}{\partial \text{第2层}} \cdot \frac{\partial \text{第2层}}{\partial \text{第1层}} \cdot \frac{\partial \text{第1层}}{\partial W_1}
 $$
+
 **核心**：这是一个**单一的、但可能很长的链式乘法**。梯度需要穿过网络的深度。
 
 #### 2. 循环神经网络（RNN）：**“时间”上的链式法则 + 路径求和**
