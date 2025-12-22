@@ -38,7 +38,7 @@ LSTM 在 RNN 的基础上除了原有的 h_t 之外又引入了一个额外的�
 
 在图中的体现就是，它决定了有多少上一时刻的细胞状态 C_{t-1}可以流入当前时刻。
 
-![Alt text]./images/LSMT/(image-2.png)
+![Alt text](./images/LSMT/image-2.png)
 
 $$f_t = \sigma(W_f x_t + U_f h_{t-1}) $$
 
