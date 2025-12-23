@@ -14,7 +14,7 @@ Flash Attention 的核心思想就是通过分块计算（tiling）和核函数�
 
 #### GPU的存储层级
 
-![Alt text](./images/FlashAttention/image-3.png)
+![Alt text](../images/FlashAttention/image-3.png)
 
 上图是Flash attention论文所绘制的硬件不同的存储类型、存储大小和带宽。一般来说，GPU上的存储分类，可以按照是否在芯片上分为片上内存(on chip)和片下内存(off chip)。
 
@@ -26,7 +26,7 @@ Flash Attention 的核心思想就是通过分块计算（tiling）和核函数�
 
 #### GPU的计算流程
 
-![Alt text](./images/FlashAttention/image-4.png)
+![Alt text](../images/FlashAttention/image-4.png)
 
 L1缓存/shared memory：每个SM都有自己的L1缓存，用于存储SM内的数据，被SM内所有的cuda cores共享。SM间不能互相访问彼此的L1。NV Volta架构后，L1和shared memory合并（Volta架构前只有Kepler做过合并），目的是为了进一步降低延迟。合并过后，用户能写代码直接控制的依然是shared memory，同时可控制从L1中分配多少存储给shared memory。Flash attention中SRAM指的就是L1 cache/shared memory。
 
@@ -64,7 +64,7 @@ $$x = qK^T = [2, 1, 3, 0]$$
 
 $$\text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big)V$$
 
-![Alt text](./images/FlashAttention/image.png)
+![Alt text](../images/FlashAttention/image.png)
 
 在原本的计算流程中首先是：
 
@@ -101,9 +101,9 @@ $$o = \sum_i p_i v_i$$
 
 ### 分块后的计算流程
 
-![Alt text](./images/FlashAttention/image-1.png)
+![Alt text](../images/FlashAttention/image-1.png)
 
-![Alt text](./images/FlashAttention/image-2.png)
+![Alt text](../images/FlashAttention/image-2.png)
 
 我们把 Key / Value **分成两个 block**：
 

@@ -24,7 +24,7 @@
 
 ## 原理
 
-![Alt text](./images/RNN/image.png)
+![Alt text](../images/RNN/image.png)
 
 RNN是一个“闭环”系统，当前的决策会影响到未来的决策。这种结构使其能够处理前后有关联的序列数据。
 
@@ -32,7 +32,7 @@ RNN是一个“闭环”系统，当前的决策会影响到未来的决策。�
 * **输出 $o$**：它产生一个输出。
 * **循环连接 (箭头指向自身的弧线)**：这是最关键的部分！它表示这个单元不仅处理当前输入，还会接收**自己在上一个时刻的状态**作为额外的输入。这个“状态”就是它的记忆。
 
-![Alt text](./images/RNN/image-1.png)
+![Alt text](../images/RNN/image-1.png)
 
 ### 在时间上展开
 
@@ -124,7 +124,7 @@ $$
 
 ## RNN的多种模型
 
-![Alt text](./images/RNN/image-2.png)
+![Alt text](../images/RNN/image-2.png)
 
 ### 1. One to One（一对一）
 

@@ -10,13 +10,13 @@
 
 独热编码是一种把离散的符号变量（例如单词、类别）转化为数值向量的方式。
 
-![Alt text](./images/embedding与文本数据化/image.png)
+![Alt text](../images/embedding与文本数据化/image.png)
 
 这样就可以表示这个词有没有在这句话中出现过。
 
 虽然简单直观，但它有 严重缺陷：
 
-![Alt text](./images/embedding与文本数据化/image-1.png)
+![Alt text](../images/embedding与文本数据化/image-1.png)
 
 ### 词袋模型
 
@@ -28,7 +28,7 @@ $$doc=[count(word_1),count(word_2)]$$
 
 ### 发展时间线
 
-![Alt text](./images/embedding与文本数据化/image-2.png)
+![Alt text](../images/embedding与文本数据化/image-2.png)
 
 这里会忽略掉词序和上下文，只关心出现次数。
 
@@ -38,7 +38,7 @@ Embedding（嵌入）就是把“离散的符号”映射到一个连续的稠�
 
 例如：
 
-![Alt text](./images/embedding与文本数据化/image-3.png)
+![Alt text](../images/embedding与文本数据化/image-3.png)
 
 Embedding的诞生解决了独热编码矩阵过于稀疏以及词袋模型不包含语义信息的问题。
 
@@ -52,21 +52,21 @@ Embedding的诞生解决了独热编码矩阵过于稀疏以及词袋模型不�
 
 假设有矩阵 $E\in R^{n \times m}$ Embedding做的事情是，给定索引i获得矩阵E中的第i行$e_i\in R^{1 \times m} $这个操作可以使用矩阵乘法来表示。
 
-![Alt text](./images/embedding与文本数据化/image-6.png)
+![Alt text](../images/embedding与文本数据化/image-6.png)
 
 举例说明：
 
-![Alt text](./images/embedding与文本数据化/image-7.png)
+![Alt text](../images/embedding与文本数据化/image-7.png)
 
 推广到多个索引的情况：
 
-![Alt text](./images/embedding与文本数据化/image-8.png)
+![Alt text](../images/embedding与文本数据化/image-8.png)
 
 这步操作就是将一个由one-hot编码组成的稀疏矩借助Embedding阵转化为一个稠密矩阵的过程。这里的Embedding相当于一个存储了很多个词的仓库，而我们所做的事情就是通过one-hot从这个仓库中去找到我们所需要的词的Embedding。在实际的操作中，这一步并不会使用矩阵乘法，而是改为了一个查询的操作。
 
 #### 空间映射表示
 
-![Alt text](./images/embedding与文本数据化/image-5.png)
+![Alt text](../images/embedding与文本数据化/image-5.png)
 
 ### 语义学习过程
 
@@ -75,4 +75,4 @@ Embedding 向量不是人工定义的，而是通过训练自动学出来的。�
 
 ### 类型与应用
 
-![Alt text](./images/embedding与文本数据化/image-4.png)
+![Alt text](../images/embedding与文本数据化/image-4.png)

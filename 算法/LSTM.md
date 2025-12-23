@@ -14,13 +14,13 @@ $$
 
 标准 RNN 的流程：[h_{t-1}, x_t] -> TANH -> h_t
 
-![Alt text](./images/LSMT/image.png)
+![Alt text](../images/LSMT/image.png)
 
 而在 LSTM 中则再次基础上增加了细胞状态（C_{t-1}）和门控的流程。
 
 LSTM：[h_{t-1}, x_t, C_{t-1}] -> [遗忘门，输入门，输出门，候选值] -> [h_t, C_t]
 
-![Alt text](./images/LSMT/image-1.png)
+![Alt text](../images/LSMT/image-1.png)
 
 ## LSTM 的原理
 
@@ -38,7 +38,7 @@ LSTM 在 RNN 的基础上除了原有的 h_t 之外又引入了一个额外的�
 
 在图中的体现就是，它决定了有多少上一时刻的细胞状态 C_{t-1}可以流入当前时刻。
 
-![Alt text](./images/LSMT/image-2.png)
+![Alt text](../images/LSMT/image-2.png)
 
 $$f_t = \sigma(W_f x_t + U_f h_{t-1}) $$
 
@@ -48,7 +48,7 @@ $$f_t = \sigma(W_f x_t + U_f h_{t-1}) $$
 
 简单来说，它控制着 “哪些新知识值得被记住”。
 
-![Alt text](./images/LSMT/image-3.png)
+![Alt text](../images/LSMT/image-3.png)
 
 $$i_t = \sigma(W_i x_t + U_i h_{t-1}) \$$
 
@@ -62,7 +62,7 @@ $$c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t $$
 
 ### 输出层门
 
-![Alt text](./images/LSMT/image-4.png)
+![Alt text](../images/LSMT/image-4.png)
 
 基于当前的输入，来调控有多少“处理后的长期记忆”将作为当前时刻的隐藏状态输出。
 

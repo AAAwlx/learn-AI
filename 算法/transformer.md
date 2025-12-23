@@ -2,7 +2,7 @@
 
 ## 整体架构
 
-![Alt text](./images/transformer/image.png)
+![Alt text](../images/transformer/image.png)
 
 NX模块是由 N 层Encoder Layer堆叠起来的。一组输入数据（例如一个句子）会依次通过 N 个完全相同的编码器层，然后再通过 N 个完全相同的解码器层。​​这里的 ​​N​​ 是一个超参数，代表模型的深度。
 
@@ -18,7 +18,7 @@ NX模块是由 N 层Encoder Layer堆叠起来的。一组输入数据（例如�
 
 ### 分词
 
-![Alt text](./images/transformer/image-1.png)
+![Alt text](../images/transformer/image-1.png)
 
 ### Token Embedding（词向量）
 
@@ -62,7 +62,7 @@ Transformer 中单词的输入表示 x由单词 Embedding 和位置 Embedding �
 * 动态权重分配​​：根据输入序列的当前内容计算注意力权重，而非依赖固定模式（如RNN的逐步传递或CNN的局部窗口）。
 * ​​全局感知​​：每个位置的输出是所有位置的加权组合，能直接建模长距离依赖。
 
-![Alt text](./images/transformer/image-2.png)
+![Alt text](../images/transformer/image-2.png)
 
 上图是 Self-Attention 的结构，在计算的时候需要用到矩阵Q(查询),K(键值),V(值)。在实际中，Self-Attention 接收的是输入(单词的表示向量x组成的矩阵X) 或者上一个 Encoder block 的输出。而Q,K,V正是通过 Self-Attention 的输入进行线性变换得到的。
 
@@ -87,7 +87,7 @@ V (Value)|值向量，用来提供 token 的实际信息，最后输出加权	|�
 
 Self-Attention 的输入用矩阵X进行表示，则可以使用线性变阵矩阵WQ,WK,WV计算得到Q,K,V。计算如下图所示，注意 X, Q, K, V 的每一行都表示一个单词。这里的WQ、WK、WV一开始也是随机定义的，他们和词向量类似会在学习的过程中逐渐进行优化。
 
-![Alt text](./images/transformer/image-3.png)
+![Alt text](../images/transformer/image-3.png)
 
 ### Self-Attention 的计算过程
 
@@ -123,26 +123,26 @@ $$\text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big)V$$
 Softmax 是一个数学函数，它可以将任意一组实数（正数、负数、零都可以）转换为一组概率分布。
 公式：
 
-![Alt text](./images/transformer/image-4.png)
+![Alt text](../images/transformer/image-4.png)
 
 * $z_i$: 第 i 个类别的原始得分（logit）。
 * $e^{z_i}$：对每个得分取指数。这是因为原始得分可能为负，取指数后能确保所有值为正。
 * $sum_{j=1}^{K} e^{z_j}$: 对所有 K 个类别的指数值求和。这个和作为归一化分母。
 * $\sigma(\mathbf{z})_i$: 最终得到的第 i 个类别的概率。它的值在 (0, 1) 之间，并且所有 K 个类别的概率之和为 1。
 
-![Alt text](./images/transformer/image-5.png)
+![Alt text](../images/transformer/image-5.png)
 
 在实际编程中，直接计算$e^{z_i}$可能会导致数值溢出（如果很大）。
 
 $e^{z_i}$过大的危害：
 
-![Alt text](./images/transformer/image-6.png)
+![Alt text](../images/transformer/image-6.png)
 
 因此，我们使用一个数学上的等价形式来增强数值稳定性：
 
 $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j - \max(\mathbf{z})}}$$
 
-![Alt text](./images/transformer/image-7.png)
+![Alt text](../images/transformer/image-7.png)
 
 总体过程可以总结为：
 
@@ -150,19 +150,19 @@ $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j
 2. 求和​​：将所有指数计算结果加起来，得到一个总和。
 3. 归一化​​：将每个指数计算结果除以上一步得到的总和。
 
-![Alt text](./images/transformer/image-8.png)
+![Alt text](../images/transformer/image-8.png)
 
 #### 与V相乘
 
 得到 Softmax 矩阵之后可以和V相乘，得到最终的输出Z。
 
-![Alt text](./images/transformer/image-9.png)
+![Alt text](../images/transformer/image-9.png)
 
 上图中 Softmax 矩阵的第 1 行表示单词 1 与其他所有单词的 attention 系数，最终单词 1 的输出等于所有单词 i 的值。
 
 根据 attention 系数的比例加在一起得到，如下图所示：
 
-![Alt text](./images/transformer/image-10.png)
+![Alt text](../images/transformer/image-10.png)
 
 这样产生的 Z₁是一个全新的向量，它融合了整个句子的信息，但​​侧重于（注意力系数）那些与“单词1”最相关的词所提供的信息​​。
 
@@ -195,19 +195,19 @@ $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j
 * 头3​​：可能专门关注​​指代或修饰关系​​。它可能关注“the”来确定第一个“apple”是普通名词。
 * ...​​（其他头会捕捉其他更细微的模式）
 
-![Alt text](./images/transformer/image-11.png)
+![Alt text](../images/transformer/image-11.png)
 
 ### Multi-Head Attention结构
 
-![Alt text](./images/transformer/image-12.png)
+![Alt text](../images/transformer/image-12.png)
 
 从上图可以看到 Multi-Head Attention 包含多个 Self-Attention 层，首先将输入X分别传递到 h 个不同的 Self-Attention 中，计算得到 h 个输出矩阵Z。下图是 h=8 时候的情况，此时会得到 8 个输出矩阵Z。
 
-![Alt text](./images/transformer/image-13.png)
+![Alt text](../images/transformer/image-13.png)
 
 得到 8 个输出矩阵Z1到Z8之后，Multi-Head Attention 将它们拼接在一起 (Concat)，然后传入一个Linear层，得到 Multi-Head Attention 最终的输出Z。
 
-![Alt text](./images/transformer/image-14.png)
+![Alt text](../images/transformer/image-14.png)
 
 这里的目的是通过Linear变换将拼接起来的Concat矩阵压缩回原来的维度。这里用来Linear变换的矩阵也是通过学习得到的。
 
@@ -256,7 +256,7 @@ $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j
 
 ## 编码器（Encoder）
 
-![Alt text](./images/transformer/image-15.png)
+![Alt text](../images/transformer/image-15.png)
 
 上图红色部分是 Transformer 的 Encoder block 结构。
 
@@ -271,7 +271,7 @@ $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j
 
 将子层的输入与子层的输出相加，形成一个“残差”连接。
 
-![Alt text](./images/transformer/image-16.png)
+![Alt text](../images/transformer/image-16.png)
 
 对于图中的结构来说，第一个Add & Norm子层的输入为原始的输入矩阵，而子层的则来自于多注意力机制的层。第二个Add & Norm子层的输入为第一个Add & Norm的输出，子层的输出为FFN层的输出。
 
@@ -316,23 +316,23 @@ $$\text{LayerNorm}(x') = \frac{x' - \mu}{\sigma} \cdot \gamma + \beta$$
 
 1. 计算均值和方差​：
 
-![Alt text](./images/transformer/image-17.png)
+![Alt text](../images/transformer/image-17.png)
 
 2. 归一化（减去均值，除以标准差）​
 
-![Alt text](./images/transformer/image-18.png)
+![Alt text](../images/transformer/image-18.png)
 
 3. 仿射变换（可学习的缩放和偏移）​
 
 如果LayerNorm只做前两步，那么它的输出就会被严格限制在特定的分布内，这可能会损害模型的表达能力，因此，我们引入两个可学习的参数γ和β。
 
-![Alt text](./images/transformer/image-19.png)
+![Alt text](../images/transformer/image-19.png)
 
 这个最终输出的分布不再是为0均值、1方差，但它是在一个​​稳定、规整的分布基础上进行变换的结果​​。γ和β让模型自己决定每个特征维度的最佳均值和方差。这确保了​​输入到激活函数的数据始终被稳定在一个标准的分布范围内。
 
 ##### 为什么这里是 LayerNorm 而不是 BatchNorm？
 
-![Alt text](./images/transformer/image-20.png)
+![Alt text](../images/transformer/image-20.png)
 
 **Batch Normalization（BatchNorm）**
 
@@ -439,11 +439,11 @@ $$\text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}+M\Big )V$$
 
 假设序列长度为3，则掩码矩阵M为：
 
-![Alt text](./images/transformer/image-21.png)
+![Alt text](../images/transformer/image-21.png)
 
 在计算自注意力时，对于第一个位置（第一行），它只能关注第一个元素（因为第二、三个位置是负无穷）；第二个位置可以关注第一和第二个元素；第三个位置可以关注所有三个元素。
 
-![Alt text](./images/transformer/image-22.png)
+![Alt text](../images/transformer/image-22.png)
 
 ### 交叉注意力
 
@@ -465,7 +465,7 @@ $$\text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}+M\Big )V$$
 
 计算过程与自注意力类似，但Q、K、V的来源不同：
 
-![Alt text](./images/transformer/image-23.png)
+![Alt text](../images/transformer/image-23.png)
 
 这一步相当于我们拿着解码器输入的问题（Q）来在知识库中查询（K,V）已经准备好的答案。
 
@@ -534,7 +534,7 @@ $$L = \frac{1}{N} \sum_i (y_i - \hat{y_i})^2$$
 
 这在回归问题（预测连续值）中很合理，但在 Transformer 的场景下，会出现几个严重问题：
 
-![Alt text](./images/transformer/image-26.png)
+![Alt text](../images/transformer/image-26.png)
 
 #### 直观例子对比
 
@@ -548,9 +548,9 @@ $$\hat{y}_1=[0.33,0.34,0.33], \hat{y}_2=[0.05,0.9,0.05]$$
 
 计算损失：
 
-![Alt text](./images/transformer/image-25.png)
+![Alt text](../images/transformer/image-25.png)
 
 交叉熵在分类精度上能提供更强的信号，MSE 太“温和”。
 总结
 
-![Alt text](./images/transformer/image-24.png)
+![Alt text](../images/transformer/image-24.png)
