@@ -154,7 +154,7 @@ $$\sigma(\mathbf{z})_i = \frac{e^{z_i - \max(\mathbf{z})}}{\sum_{j=1}^{K} e^{z_j
 
 #### 与V相乘
 
-得到 Softmax 矩阵之后可以和V相乘，得到最终的输出Z。
+得到 Softmax 矩阵之后可以和V相乘，得到最终的输出Z。这一步的作用是按照查询与特征间的关联性来加权组合所需的语义内容。
 
 ![Alt text](../images/transformer/image-9.png)
 
