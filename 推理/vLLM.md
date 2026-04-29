@@ -111,3 +111,170 @@ VLLM（vLLM）加载模型的过程主要分为**模型初始化、权重加载�
 | **Continuous Batching** | 动态合并多个请求的批次 | 提高GPU利用率，降低延迟 |
 | **异步加载** | 多线程并行读取权重文件 | 加速模型加载速度 |
 | **内存映射** | 使用mmap直接映射文件到内存 | 减少内存占用，支持大模型加载 |
+
+## vllm的绑定链路
+
+三层绑定链路（传统架构）
+
+$$\textbf{模型} \xrightarrow{强绑定} \textbf{vLLM实例(Pod内进程)} 
+\xrightarrow{调度隔离} \textbf{K8s Pod} \xrightarrow{编排} \textbf{K8s集群}$$
+
+VLLM 与 模型 的绑定关系：
+
+1. **1 个 VLLM 实例（一组进程） 严格绑定 1 个大模型**
+2. 实例启动时通过命令行指定唯一模型，**进程生命周期内只能跑这一个模型**
+3. 模型权重、Tokenizer、计算图、编译Kernel、KV Cache、显存资源全部为该模型独占
+4. 更换模型 = 必须销毁当前 VLLM 实例，新建实例加载新模型（冷切换）
+
+K8s 与 VLLM 实例 的关系
+
+1. **K8s 最小调度单元：Pod**
+   一个 Pod 内部运行**单个 vLLM 服务容器**，即：
+   $$\boldsymbol{Pod \iff 一个独立的vLLM实例}$$
+   
+2. 资源隔离：
+   - K8s 为 Pod 绑定 GPU 卡、显存、CPU、内存、网络
+   - 每个 vLLM Pod 独占分配的硬件资源，和其他 Pod 隔离
+3. 运维管控：
+   - 部署：K8s Deployment/StatefulSet 批量创建 vLLM Pod
+   - 扩缩容：增加/减少 Pod 数量，横向扩容推理并发
+   - 模型切换：**K8s 层面重建 Pod**
+     删除旧模型Pod → 拉起新镜像/新参数的新Pod → 完成模型切换
+
+
+## 推理流程
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant APIServer
+    participant EngineCore
+    participant Scheduler
+    participant KVCacheManager
+    participant Executor
+    participant ModelRunner
+    participant GPU
+    participant OutputProcessor
+
+    Note over Client,OutputProcessor: 第一阶段：请求提交与初始化
+
+    Client->>APIServer: 1. 发送推理请求<br/>(prompt + sampling_params)
+    APIServer->>APIServer: 2. 创建 Request 对象<br/>(request_id, prompt_tokens, ...)
+    APIServer->>EngineCore: 3. add_request(request)
+    
+    EngineCore->>Scheduler: 4. add_request(request)
+    Scheduler->>Scheduler: 5. _enqueue_waiting_request(request)<br/>加入 waiting 队列
+    Scheduler->>Scheduler: 6. requests[request_id] = request<br/>存储到请求字典
+    
+    Note over Client,OutputProcessor: 第二阶段：调度循环（Step 1 - N）
+
+    loop 每 Step
+        EngineCore->>EngineCore: step() 开始
+        
+        Note over EngineCore,Scheduler: 步骤1：调度决策
+        EngineCore->>Scheduler: schedule()
+        Scheduler->>Scheduler: 检查约束条件<br/>(token_budget, max_num_seqs, max_loras)
+        
+        alt 有 RUNNING 请求
+            Scheduler->>Scheduler: 遍历 running 请求<br/>计算 num_new_tokens
+            Scheduler->>KVCacheManager: allocate_slots(request, num_tokens)
+            
+            alt 分配成功
+                KVCacheManager-->>Scheduler: 返回 new_blocks
+                Scheduler->>Scheduler: scheduled_running_reqs.append(request)
+            else 分配失败（内存不足）
+                Scheduler->>Scheduler: 抢占优先级最低的请求<br/>(Priority Preemption 或 Swap Out)
+                Scheduler->>KVCacheManager: free_blocks(preempted_req)
+            end
+        end
+        
+        alt 有 WAITING 请求且有剩余 budget
+            Scheduler->>Scheduler: 遍历 waiting 请求
+            Scheduler->>KVCacheManager: get_computed_blocks(request)<br/>检查前缀缓存
+            
+            alt 使用 KV Connector
+                Scheduler->>Scheduler: connector.get_num_new_matched_tokens()<br/>检查远程缓存
+            end
+            
+            Scheduler->>KVCacheManager: allocate_slots(request, num_new_tokens)
+            Scheduler->>Scheduler: scheduled_new_reqs.append(request)
+        end
+        
+        Scheduler-->>EngineCore: 返回 SchedulerOutput<br/>(scheduled_reqs, num_scheduled_tokens, ...)
+        
+        Note over EngineCore,GPU: 步骤2：模型执行
+        EngineCore->>Executor: execute_model(scheduler_output, non_block=True)
+        
+        Executor->>ModelRunner: execute_model(scheduler_output)
+        
+        ModelRunner->>ModelRunner: _update_states(scheduler_output)<br/>更新批处理状态
+        
+        alt 有新的请求加入批次
+            ModelRunner->>ModelRunner: add_request_to_batch(request)
+            ModelRunner->>ModelRunner: update_req_spec_token_ids()
+        end
+        
+        alt 有完成的请求移出批次
+            ModelRunner->>ModelRunner: remove_request(request_id)
+            ModelRunner->>ModelRunner: condense()<br/>压缩批处理数据
+        end
+        
+        ModelRunner->>ModelRunner: _prepare_inputs()<br/>准备输入 tensors
+        
+        alt 启用 LoRA
+            ModelRunner->>ModelRunner: set_active_loras(input_batch, ...)<br/>激活当前批次的 LoRAs
+        end
+        
+        ModelRunner->>ModelRunner: _determine_batch_execution_and_padding()<br/>确定执行策略（CUDA Graph / Micro-batching）
+        
+        alt 使用 CUDA Graph
+            ModelRunner->>ModelRunner: capture_or_execute_cuda_graph()
+        else 使用 Micro-batching
+            ModelRunner->>ModelRunner: create_ubatch_slices()<br/>创建 micro-batch 分片
+        end
+        
+        Note over ModelRunner,GPU: 步骤3：GPU 计算
+        ModelRunner->>GPU: 模型前向传播<br/>(input_ids → hidden_states → logits)
+        
+        alt 有 Speculative Decoding
+            ModelRunner->>GPU: 执行 draft model<br/>生成 draft tokens
+            ModelRunner->>GPU: 执行 target model<br/>验证 draft tokens
+        end
+        
+        GPU-->>ModelRunner: 返回 hidden_states, logits
+        
+        ModelRunner->>ModelRunner: sample_tokens(logits)<br/>采样生成新的 token_ids
+        
+        ModelRunner-->>Executor: 返回 ModelRunnerOutput<br/>(sampled_token_ids, ...)
+        Executor-->>EngineCore: 返回 Future[ModelRunnerOutput]
+        
+        EngineCore->>EngineCore: future.result()<br/>等待模型执行完成
+        
+        Note over EngineCore,OutputProcessor: 步骤4：输出处理
+        EngineCore->>Scheduler: update_from_output(scheduler_output, model_output)
+        
+        Scheduler->>Scheduler: 更新每个请求的状态<br/>(num_computed_tokens, output_token_ids)
+        
+        alt 请求完成（达到停止条件）
+            Scheduler->>Scheduler: finish_requests(request_id, FINISHED_SUCCESS)
+            Scheduler->>KVCacheManager: free_blocks(request)<br/>释放 KV cache
+        end
+        
+        Scheduler-->>EngineCore: 返回 EngineCoreOutputs<br/>(finished_reqs, new_token_ids, ...)
+        
+        EngineCore->>OutputProcessor: 处理输出
+        
+        alt 有流式输出
+            OutputProcessor-->>APIServer: 推送生成的 token
+            APIServer-->>Client: 返回生成的 token
+        end
+        
+        EngineCore->>EngineCore: step() 结束
+    end
+    
+    Note over Client,OutputProcessor: 第三阶段：请求完成
+
+    alt 所有请求完成
+        OutputProcessor-->>Client: 最后一个 token + finish_reason
+    end
+```
