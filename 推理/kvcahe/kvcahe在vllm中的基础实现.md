@@ -594,6 +594,17 @@ offloading_manager.prepare_store(keys)
 # ✅ CPU backup 作为第三层缓存
 ```
 
+如果prefixcache被删除了，kvcache block还在，但是kvcache block被交换到内存这些地方，这里会不会对内存造成浪费？
+
+这里 Offloading 的触发基于 OffloadKey，不是 block_hash
+
+```py
+# OffloadKey 的组成
+def make_offload_key(block_hash: bytes, group_idx: int) -> OffloadKey:
+    return OffloadKey(block_hash + group_idx.to_bytes(4, "big", signed=False))
+```
+OffloadKey 包含 block_hash,如果 block_hash = None（被软删除），就无法生成有效的 OffloadKey。没有有效的 OffloadKey，就不会触发 offloading。
+
 ---
 
 ## 5. 前缀缓存实现
