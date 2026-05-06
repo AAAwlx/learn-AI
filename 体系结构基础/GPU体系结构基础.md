@@ -222,7 +222,40 @@ __global__ void myKernel(float* data) {
 
 如果一个threadblock上的线程多于32，那么就会分组交替的执行，但是这里最好为32的整数倍，如果不是32的整数倍可能会导致一部分核心是空转的，导致性能的下降。
 
-这里的维度划分主要取决于训练中给出的数据的维度，是 $N*N$ 还是 $N*N*N$ 。
+### 为什么需要进行维度划分
+
+首先要申明的是这里 block 与 thread 的维度与硬件并无关系。
+
+这里的维度划分主要是为了更加方便灵活的对数据的形状进行表示。
+
+例如：
+
+以 512×512 图片 + 16×16 Block 的例子拆开讲：
+
+1. 局部视角：一个 Block = 图片里一块 16×16 小区域，每个 Block 对应图片里一块 16×16 像素 tile。 Block 内部用 16×16 二维数组，ThreadthreadIdx.x/y 刚好就是小块内的局部像素坐标。
+
+2. 全局视角：整张图 = 很多个 16×16 的二维 Block 拼起来。512×512，每块 16×16：横向需要 32 个 Block、纵向需要 32 个 Block。所以 Grid 直接设成 dim3(32, 32)，blockIdx.x/y 直接就是当前小块在整张图片里的块坐标。
+
+```c
+// 线程坐标直接 = 数据坐标
+int x = threadIdx.x + blockIdx.x * blockDim.x;
+int y = threadIdx.y + blockIdx.y * blockDim.y;
+
+// 直接访问矩阵元素
+float val = mat[y * W + x];
+```
+
+如果不做拆分就会变成：
+
+```c
+// 先把一维 blockIdx 强行拆成 行、列
+int block_x = blockIdx.x % 32;
+int block_y = blockIdx.x / 32;
+
+// 再拼全局坐标
+int x = block_x * 16 + threadIdx.x;
+int y = block_y * 16 + threadIdx.y;
+```
 
 ## GPU 调度层级
 
