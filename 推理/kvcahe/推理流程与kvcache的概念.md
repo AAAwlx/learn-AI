@@ -2,7 +2,7 @@
 
 当前主流大语言模型（如 Llama、Qwen、GPT 等）普遍采用 decoder-only 架构，其推理过程为 自回归生成（autoregressive generation）：逐个 token 地生成回答，每一步都依赖此前所有已知 token（包括用户输入和已生成内容）。
 
-![alt text](../images/推理流程与kvcache/image.png)
+![alt text](../../images/推理流程与kvcache/image.png)
 
 ## 整体流程分两阶段
 
