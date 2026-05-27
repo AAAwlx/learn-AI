@@ -1,0 +1,90 @@
+<svg width="920" height="560" viewBox="0 0 920 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="920" height="560" fill="#F7F8FA"/>
+
+  <text x="460" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#20242A">
+    传统注意力中的 n x n 注意力矩阵
+  </text>
+
+  <text x="140" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#2E5EAA">Q</text>
+  <text x="140" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#4D5966">n 个查询 token</text>
+
+  <text x="458" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#2E5EAA">K^T</text>
+  <text x="458" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#4D5966">n 个键 token</text>
+
+  <text x="732" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#B45A22">QK^T</text>
+  <text x="732" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#4D5966">每个 token 对所有 token 的分数</text>
+
+  <g transform="translate(86 188)">
+    <rect x="0" y="0" width="108" height="252" rx="6" fill="#DDEBFF" stroke="#77A7F7" stroke-width="2"/>
+    <line x1="0" y1="42" x2="108" y2="42" stroke="#77A7F7"/>
+    <line x1="0" y1="84" x2="108" y2="84" stroke="#77A7F7"/>
+    <line x1="0" y1="126" x2="108" y2="126" stroke="#77A7F7"/>
+    <line x1="0" y1="168" x2="108" y2="168" stroke="#77A7F7"/>
+    <line x1="0" y1="210" x2="108" y2="210" stroke="#77A7F7"/>
+    <text x="54" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">q1</text>
+    <text x="54" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">q2</text>
+    <text x="54" y="111" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">q3</text>
+    <text x="54" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">...</text>
+    <text x="54" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">q(n-1)</text>
+    <text x="54" y="237" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">qn</text>
+    <text x="54" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#20242A">n x d</text>
+  </g>
+
+  <text x="245" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#20242A">x</text>
+
+  <g transform="translate(310 250)">
+    <rect x="0" y="0" width="296" height="108" rx="6" fill="#DDEBFF" stroke="#77A7F7" stroke-width="2"/>
+    <line x1="49.33" y1="0" x2="49.33" y2="108" stroke="#77A7F7"/>
+    <line x1="98.66" y1="0" x2="98.66" y2="108" stroke="#77A7F7"/>
+    <line x1="147.99" y1="0" x2="147.99" y2="108" stroke="#77A7F7"/>
+    <line x1="197.32" y1="0" x2="197.32" y2="108" stroke="#77A7F7"/>
+    <line x1="246.65" y1="0" x2="246.65" y2="108" stroke="#77A7F7"/>
+    <text x="24.66" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">k1</text>
+    <text x="73.99" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">k2</text>
+    <text x="123.32" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">k3</text>
+    <text x="172.65" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">...</text>
+    <text x="221.98" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">k(n-1)</text>
+    <text x="271.31" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#25364B">kn</text>
+    <text x="148" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#20242A">d x n</text>
+  </g>
+
+  <text x="646" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#20242A">=</text>
+
+  <g transform="translate(682 190)">
+    <rect x="0" y="0" width="252" height="252" rx="6" fill="#FFF0DE" stroke="#ED9B45" stroke-width="2"/>
+    <line x1="0" y1="42" x2="252" y2="42" stroke="#ED9B45"/>
+    <line x1="0" y1="84" x2="252" y2="84" stroke="#ED9B45"/>
+    <line x1="0" y1="126" x2="252" y2="126" stroke="#ED9B45"/>
+    <line x1="0" y1="168" x2="252" y2="168" stroke="#ED9B45"/>
+    <line x1="0" y1="210" x2="252" y2="210" stroke="#ED9B45"/>
+    <line x1="42" y1="0" x2="42" y2="252" stroke="#ED9B45"/>
+    <line x1="84" y1="0" x2="84" y2="252" stroke="#ED9B45"/>
+    <line x1="126" y1="0" x2="126" y2="252" stroke="#ED9B45"/>
+    <line x1="168" y1="0" x2="168" y2="252" stroke="#ED9B45"/>
+    <line x1="210" y1="0" x2="210" y2="252" stroke="#ED9B45"/>
+    <text x="21" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s11</text>
+    <text x="63" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s12</text>
+    <text x="105" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s13</text>
+    <text x="147" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">...</text>
+    <text x="189" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s1,n-1</text>
+    <text x="231" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s1n</text>
+    <text x="21" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s21</text>
+    <text x="63" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s22</text>
+    <text x="105" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s23</text>
+    <text x="147" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">...</text>
+    <text x="231" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">s2n</text>
+    <text x="126" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#5C351A">...</text>
+    <text x="21" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">sn1</text>
+    <text x="63" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">sn2</text>
+    <text x="105" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">sn3</text>
+    <text x="147" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">...</text>
+    <text x="231" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#5C351A">snn</text>
+    <text x="126" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#20242A">n x n</text>
+  </g>
+
+  <path d="M716 474H898" stroke="#B45A22" stroke-width="2" stroke-linecap="round"/>
+  <path d="M898 474L886 467V481L898 474Z" fill="#B45A22"/>
+  <text x="807" y="506" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#B45A22">
+    序列越长，矩阵按 n^2 增长
+  </text>
+</svg>
