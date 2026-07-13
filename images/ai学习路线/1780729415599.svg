@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 900" width="1280" height="900">
+  <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 30px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 15px; fill: #6b7280; }
+    .layer-title { font-size: 14px; font-weight: 700; fill: #2563eb; letter-spacing: 1px; }
+    .node-title { font-size: 18px; font-weight: 700; fill: #111827; }
+    .node-sub { font-size: 12px; fill: #6b7280; }
+    .small { font-size: 11px; fill: #6b7280; }
+    .legend { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="900" fill="#ffffff"/>
+  <text x="640" y="48" text-anchor="middle" class="title">Agent 核心运行架构</text>
+  <text x="640" y="76" text-anchor="middle" class="subtitle">LLM + Memory + Tools + Loop = Agent</text>
+
+  <rect x="44" y="104" width="1192" height="126" rx="18" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="68" y="132" class="layer-title">INPUT LAYER 输入层</text>
+
+  <g filter="url(#shadow)">
+    <rect x="94" y="150" width="128" height="56" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="130" cy="178" r="18" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="130" cy="171" r="5" fill="#2563eb"/>
+    <path d="M 117 190 C 123 182, 137 182, 143 190" stroke="#2563eb" stroke-width="2" fill="none"/>
+    <text x="180" y="184" text-anchor="middle" class="node-title">User</text>
+
+    <rect x="280" y="145" width="202" height="66" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="381" y="172" text-anchor="middle" class="small">GOAL</text>
+    <text x="381" y="194" text-anchor="middle" class="node-title">Task / Query</text>
+
+    <rect x="540" y="145" width="202" height="66" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="641" y="172" text-anchor="middle" class="small">ASYNC</text>
+    <text x="641" y="194" text-anchor="middle" class="node-title">Event / Trigger</text>
+
+    <rect x="800" y="145" width="276" height="66" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="938" y="172" text-anchor="middle" class="small">CONFIG</text>
+    <text x="938" y="194" text-anchor="middle" class="node-title">System Prompt + Rules</text>
+  </g>
+
+  <rect x="44" y="270" width="1192" height="214" rx="18" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="68" y="298" class="layer-title">AGENT CORE 智能体核心</text>
+
+  <g filter="url(#shadow)">
+    <rect x="110" y="328" width="222" height="74" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="221" y="354" text-anchor="middle" class="small">REASONING</text>
+    <text x="221" y="376" text-anchor="middle" class="node-title">Planner</text>
+    <text x="221" y="394" text-anchor="middle" class="node-sub">Decompose / Plan</text>
+
+    <rect x="482" y="316" width="276" height="98" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <rect x="492" y="326" width="256" height="78" rx="10" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="620" y="354" text-anchor="middle" class="small">MODEL</text>
+    <text x="620" y="378" text-anchor="middle" class="node-title">LLM Core</text>
+    <text x="620" y="396" text-anchor="middle" class="node-sub">Reason + Decide</text>
+
+    <rect x="910" y="328" width="222" height="74" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="1021" y="354" text-anchor="middle" class="small">ACTOR</text>
+    <text x="1021" y="376" text-anchor="middle" class="node-title">Tool Selector</text>
+    <text x="1021" y="394" text-anchor="middle" class="node-sub">Pick + Invoke</text>
+
+    <rect x="150" y="430" width="980" height="38" rx="10" fill="#ffffff" stroke="#c4b5fd" stroke-width="1.5"/>
+    <text x="640" y="452" text-anchor="middle" class="node-title">Harness 配置层</text>
+    <text x="640" y="466" text-anchor="middle" class="node-sub">Prompts · Tools · Permissions · Compaction · Sub-agents</text>
+  </g>
+
+  <rect x="44" y="526" width="558" height="236" rx="18" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="68" y="554" class="layer-title">MEMORY 记忆层</text>
+
+  <g filter="url(#shadow)">
+    <rect x="92" y="586" width="210" height="72" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <text x="197" y="614" text-anchor="middle" class="small">CONTEXT WINDOW</text>
+    <text x="197" y="636" text-anchor="middle" class="node-title">Working Memory</text>
+    <text x="197" y="654" text-anchor="middle" class="node-sub">current turn</text>
+
+    <path d="M 95 702 L 245 702 L 245 748 L 95 748 Z" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <path d="M 95 702 C 95 682, 245 682, 245 702" fill="#dcfce7" stroke="#059669" stroke-width="2"/>
+    <path d="M 95 748 C 95 768, 245 768, 245 748" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <text x="170" y="728" text-anchor="middle" class="node-title">Vector Store</text>
+    <text x="170" y="748" text-anchor="middle" class="node-sub">semantic</text>
+
+    <rect x="362" y="586" width="172" height="72" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <circle cx="414" cy="622" r="18" fill="#dcfce7" stroke="#059669" stroke-width="2"/>
+    <circle cx="452" cy="622" r="18" fill="#dcfce7" stroke="#059669" stroke-width="2"/>
+    <circle cx="433" cy="604" r="18" fill="#dcfce7" stroke="#059669" stroke-width="2"/>
+    <text x="448" y="632" text-anchor="middle" class="node-title">Graph DB</text>
+    <text x="448" y="652" text-anchor="middle" class="node-sub">relations</text>
+
+    <rect x="362" y="688" width="172" height="72" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <path d="M 388 704 L 458 704 L 488 734 L 488 746 L 388 746 Z" fill="#dcfce7" stroke="#059669" stroke-width="1.8"/>
+    <path d="M 458 704 L 458 734 L 488 734" fill="none" stroke="#059669" stroke-width="1.8"/>
+    <text x="448" y="736" text-anchor="middle" class="node-title">File System</text>
+    <text x="448" y="754" text-anchor="middle" class="node-sub">files / artifacts</text>
+  </g>
+
+  <rect x="678" y="526" width="558" height="236" rx="18" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="702" y="554" class="layer-title">TOOLS 工具层</text>
+
+  <g filter="url(#shadow)">
+    <rect x="724" y="586" width="150" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="799" y="622" text-anchor="middle" class="node-title">Web Search</text>
+    <rect x="904" y="586" width="150" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="979" y="622" text-anchor="middle" class="node-title">Code Exec</text>
+    <rect x="1084" y="586" width="126" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="1147" y="622" text-anchor="middle" class="node-title">External API</text>
+
+    <rect x="724" y="682" width="150" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="799" y="718" text-anchor="middle" class="node-title">Browser Use</text>
+    <rect x="904" y="682" width="150" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="979" y="710" text-anchor="middle" class="node-title">MCP Servers</text>
+    <text x="979" y="730" text-anchor="middle" class="node-sub">standard protocol</text>
+    <rect x="1084" y="682" width="126" height="58" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="1147" y="718" text-anchor="middle" class="node-title">Sub-Agent</text>
+  </g>
+
+  <rect x="44" y="806" width="1192" height="70" rx="18" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="68" y="834" class="layer-title">OUTPUT 输出层</text>
+
+  <g filter="url(#shadow)">
+    <rect x="260" y="828" width="220" height="36" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="370" y="852" text-anchor="middle" class="node-title">Answer / Artifact</text>
+    <rect x="546" y="828" width="220" height="36" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="656" y="852" text-anchor="middle" class="node-title">Action / Side Effect</text>
+    <rect x="832" y="828" width="220" height="36" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="942" y="852" text-anchor="middle" class="node-title">Trace / Eval</text>
+  </g>
+
+  <path d="M 222 178 L 280 178" stroke="#2563eb" stroke-width="2.2" fill="none" marker-end="url(#arrow-blue)"/>
+  <path d="M 381 211 L 381 250 L 620 250 L 620 316" stroke="#2563eb" stroke-width="2.2" fill="none" marker-end="url(#arrow-blue)"/>
+  <path d="M 641 211 L 641 250 L 620 250" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#arrow-purple)"/>
+  <path d="M 938 211 L 938 250 L 1021 250 L 1021 328" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+
+  <path d="M 332 365 L 482 365" stroke="#7c3aed" stroke-width="2.2" fill="none" marker-end="url(#arrow-purple)"/>
+  <path d="M 758 365 L 910 365" stroke="#7c3aed" stroke-width="2.2" fill="none" marker-end="url(#arrow-purple)"/>
+  <path d="M 1021 402 L 1021 430" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 620 414 L 620 430" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#arrow-purple)"/>
+
+  <path d="M 620 468 L 620 502 L 197 502 L 197 586" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="366" y="494" text-anchor="middle" class="small">retrieve context</text>
+  <path d="M 197 658 L 197 682" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M 302 622 L 362 622" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M 302 646 L 332 646 L 332 724 L 362 724" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+
+  <path d="M 1021 468 L 1021 502 L 799 502 L 799 586" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 1021 502 L 979 502 L 979 586" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 1021 502 L 1147 502 L 1147 586" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 799 644 L 799 682" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 979 644 L 979 682" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M 1147 644 L 1147 682" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arrow-orange)"/>
+
+  <path d="M 370 760 L 370 828" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrow-red)"/>
+  <path d="M 656 468 L 656 828" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrow-red)"/>
+  <path d="M 979 740 L 979 784 L 942 784 L 942 828" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrow-red)"/>
+
+  <path d="M 1021 328 C 1021 280, 620 280, 620 316" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrow-red)"/>
+  <text x="814" y="278" text-anchor="middle" class="small">loop / observe</text>
+
+  <g transform="translate(874, 882)">
+    <line x1="0" y1="0" x2="34" y2="0" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="44" y="4" class="legend">输入</text>
+    <line x1="94" y1="0" x2="128" y2="0" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="138" y="4" class="legend">推理</text>
+    <line x1="190" y1="0" x2="224" y2="0" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <text x="234" y="4" class="legend">记忆</text>
+    <line x1="286" y1="0" x2="320" y2="0" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <text x="330" y="4" class="legend">工具</text>
+  </g>
+</svg>

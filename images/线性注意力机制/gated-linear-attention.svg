@@ -1,0 +1,110 @@
+<svg width="1240" height="720" viewBox="0 0 1240 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1240" height="720" fill="#F7F8FA"/>
+  <text x="620" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#20242A">带门控的线性注意力：先控制旧记忆，再写入新信息</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748B"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#059669"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#D97706"/>
+    </marker>
+  </defs>
+
+  <!-- Input token -->
+  <g transform="translate(54 106)">
+    <rect x="0" y="0" width="188" height="104" rx="10" fill="#DBEAFE" stroke="#60A5FA" stroke-width="2"/>
+    <text x="94" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#1E3A8A">当前 token</text>
+    <text x="94" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#1E40AF">xₜ</text>
+    <text x="94" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#475569">当前隐藏表示</text>
+  </g>
+
+  <!-- Projections -->
+  <path d="M242 158H292" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(304 86)">
+    <rect x="0" y="0" width="190" height="64" rx="8" fill="#E0F2FE" stroke="#38BDF8" stroke-width="2"/>
+    <text x="95" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#075985">生成 qₜ, kₜ, vₜ</text>
+    <text x="95" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#075985">WQ, WK, WV</text>
+  </g>
+  <g transform="translate(304 178)">
+    <rect x="0" y="0" width="190" height="64" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+    <text x="95" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#92400E">生成门控 αₜ</text>
+    <text x="95" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#92400E">sigmoid(xₜWα)</text>
+  </g>
+  <path d="M242 158C270 158 274 118 292 118" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M242 158C270 158 274 210 292 210" stroke="#D97706" stroke-width="2.5" marker-end="url(#orangeArrow)"/>
+
+  <!-- Old state -->
+  <g transform="translate(74 384)">
+    <rect x="0" y="0" width="230" height="112" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="115" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#334155">旧记忆状态</text>
+    <text x="115" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#0F172A">Sₜ₋₁</text>
+    <text x="115" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#475569">压缩保存历史 Key-Value</text>
+  </g>
+
+  <!-- Gate multiply -->
+  <path d="M494 210C555 244 564 328 604 370" stroke="#D97706" stroke-width="2.5" fill="none" marker-end="url(#orangeArrow)"/>
+  <path d="M304 440H394" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(410 386)">
+    <circle cx="54" cy="54" r="54" fill="#FFF7ED" stroke="#F97316" stroke-width="2.5"/>
+    <text x="54" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#9A3412">门控</text>
+    <text x="54" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#9A3412">αₜ · S</text>
+  </g>
+
+  <g transform="translate(586 386)">
+    <rect x="0" y="0" width="232" height="112" rx="10" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2"/>
+    <text x="116" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#92400E">保留下来的旧记忆</text>
+    <text x="116" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#92400E">αₜSₜ₋₁</text>
+    <text x="116" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#92400E">αₜ 越小，遗忘越多</text>
+  </g>
+  <path d="M518 440H574" stroke="#D97706" stroke-width="2.5" marker-end="url(#orangeArrow)"/>
+
+  <!-- New memory write -->
+  <path d="M494 118C684 118 738 270 846 326" stroke="#059669" stroke-width="2.5" fill="none" marker-end="url(#greenArrow)"/>
+  <g transform="translate(790 258)">
+    <rect x="0" y="0" width="230" height="112" rx="10" fill="#DCFCE7" stroke="#34D399" stroke-width="2"/>
+    <text x="115" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">当前 token 写入</text>
+    <text x="115" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#047857">ϕ(kₜ)vₜᵀ</text>
+    <text x="115" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#047857">新的 Key-Value 信息</text>
+  </g>
+
+  <!-- Add -->
+  <path d="M818 440H878" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M905 370V402" stroke="#059669" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <g transform="translate(888 405)">
+    <circle cx="46" cy="46" r="46" fill="#F8FAFC" stroke="#64748B" stroke-width="2.5"/>
+    <text x="46" y="56" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#334155">+</text>
+  </g>
+
+  <!-- New state -->
+  <path d="M980 451H1034" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(1046 392)">
+    <rect x="0" y="0" width="178" height="118" rx="10" fill="#CCFBF1" stroke="#14B8A6" stroke-width="2"/>
+    <text x="89" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#0F766E">新记忆状态</text>
+    <text x="89" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#0F766E">Sₜ</text>
+    <text x="89" y="92" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#0F766E">供当前/后续读取</text>
+  </g>
+
+  <!-- Output -->
+  <path d="M1135 392V316" stroke="#0F766E" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <g transform="translate(1050 208)">
+    <rect x="0" y="0" width="170" height="88" rx="10" fill="#EEF2FF" stroke="#818CF8" stroke-width="2"/>
+    <text x="85" y="31" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3730A3">读取输出</text>
+    <text x="85" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#3730A3">oₜ = Sₜᵀqₜ</text>
+  </g>
+
+  <!-- Formula strip -->
+  <g transform="translate(112 586)">
+    <rect x="0" y="0" width="1016" height="76" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="508" y="31" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#0F172A">核心更新公式</text>
+    <text x="508" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#047857">Sₜ = αₜSₜ₋₁ + ϕ(kₜ)vₜᵀ</text>
+  </g>
+
+  <!-- Notes -->
+  <text x="216" y="548" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#475569">历史不再以完整 KV cache 保存</text>
+  <text x="620" y="548" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#475569">门控只控制旧状态，不是最终输出上的开关</text>
+  <text x="1014" y="548" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#475569">状态大小固定，与上下文长度无关</text>
+</svg>

@@ -1,0 +1,112 @@
+<svg width="1240" height="760" viewBox="0 0 1240 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1240" height="760" fill="#F7F8FA"/>
+  <text x="620" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#20242A">Gated DeltaNet：先遗忘，再用误差修正记忆，最后写入新信息</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748B"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#059669"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#D97706"/>
+    </marker>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#DC2626"/>
+    </marker>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+
+  <!-- Input -->
+  <g transform="translate(48 92)">
+    <rect x="0" y="0" width="184" height="104" rx="10" fill="#DBEAFE" stroke="#60A5FA" stroke-width="2"/>
+    <text x="92" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#1E3A8A">当前 token</text>
+    <text x="92" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#1E40AF">xₜ</text>
+    <text x="92" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#475569">生成 qₜ, kₜ, vₜ, αₜ, βₜ</text>
+  </g>
+
+  <!-- Derived vectors -->
+  <path d="M232 144H276" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(290 78)">
+    <rect x="0" y="0" width="184" height="58" rx="8" fill="#E0F2FE" stroke="#38BDF8" stroke-width="2"/>
+    <text x="92" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#075985">qₜ, kₜ, vₜ</text>
+    <text x="92" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#075985">读写当前信息</text>
+  </g>
+  <g transform="translate(290 164)">
+    <rect x="0" y="0" width="184" height="58" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+    <text x="92" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#92400E">αₜ</text>
+    <text x="92" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#92400E">遗忘门</text>
+  </g>
+  <g transform="translate(290 250)">
+    <rect x="0" y="0" width="184" height="58" rx="8" fill="#F3E8FF" stroke="#A78BFA" stroke-width="2"/>
+    <text x="92" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#6D28D9">βₜ</text>
+    <text x="92" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#6D28D9">修正步长</text>
+  </g>
+  <path d="M232 144C260 144 260 107 276 107" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M232 144C260 144 260 193 276 193" stroke="#D97706" stroke-width="2.5" marker-end="url(#orangeArrow)"/>
+  <path d="M232 144C260 144 260 279 276 279" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#purpleArrow)"/>
+
+  <!-- Old state -->
+  <g transform="translate(54 438)">
+    <rect x="0" y="0" width="214" height="108" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="107" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#334155">旧记忆</text>
+    <text x="107" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#0F172A">Sₜ₋₁</text>
+    <text x="107" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#475569">固定大小状态矩阵</text>
+  </g>
+
+  <!-- Step 1 predict -->
+  <path d="M268 492H326" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M474 107C534 160 392 362 398 420" stroke="#64748B" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <g transform="translate(338 422)">
+    <rect x="0" y="0" width="226" height="112" rx="10" fill="#EEF2FF" stroke="#818CF8" stroke-width="2"/>
+    <text x="113" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3730A3">1. 用旧记忆读取</text>
+    <text x="113" y="61" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#3730A3">v̂ₜ = Sₜ₋₁kₜ</text>
+    <text x="113" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#3730A3">旧记忆预测当前 value</text>
+  </g>
+
+  <!-- Step 2 error -->
+  <path d="M564 478H626" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M474 107C610 122 663 258 686 392" stroke="#059669" stroke-width="2.5" fill="none" marker-end="url(#greenArrow)"/>
+  <g transform="translate(638 422)">
+    <rect x="0" y="0" width="226" height="112" rx="10" fill="#FEE2E2" stroke="#F87171" stroke-width="2"/>
+    <text x="113" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#991B1B">2. 计算误差</text>
+    <text x="113" y="61" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#991B1B">eₜ = vₜ - v̂ₜ</text>
+    <text x="113" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#991B1B">预测错多少，就修正多少</text>
+  </g>
+
+  <!-- Step 3 gated correction -->
+  <path d="M864 478H926" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M474 193C815 208 904 322 984 420" stroke="#D97706" stroke-width="2.5" fill="none" marker-end="url(#orangeArrow)"/>
+  <path d="M474 279C765 290 866 348 962 424" stroke="#7C3AED" stroke-width="2.5" fill="none" marker-end="url(#purpleArrow)"/>
+  <g transform="translate(938 412)">
+    <rect x="0" y="0" width="250" height="132" rx="10" fill="#ECFDF5" stroke="#34D399" stroke-width="2"/>
+    <text x="125" y="29" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">3. 遗忘 + 修正 + 写入</text>
+    <text x="125" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">Sₜ = αₜ 修正旧记忆</text>
+    <text x="125" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">+ βₜvₜkₜᵀ</text>
+    <text x="125" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#047857">αₜ 控制保留，βₜ 控制修正力度</text>
+  </g>
+
+  <!-- Output state -->
+  <path d="M1063 544V602" stroke="#059669" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <g transform="translate(954 614)">
+    <rect x="0" y="0" width="218" height="82" rx="10" fill="#CCFBF1" stroke="#14B8A6" stroke-width="2"/>
+    <text x="109" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#0F766E">新记忆状态</text>
+    <text x="109" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#0F766E">Sₜ</text>
+  </g>
+
+  <!-- Formula panel -->
+  <g transform="translate(70 612)">
+    <rect x="0" y="0" width="850" height="92" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="425" y="29" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#0F172A">等价的误差修正形式</text>
+    <text x="425" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#991B1B">Sₜ = Sₜ₋₁αₜ(I - βₜkₜkₜᵀ) + βₜvₜkₜᵀ</text>
+    <text x="425" y="79" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#475569">DeltaNet 的核心：用当前 key-value 对旧记忆做一次在线梯度修正</text>
+  </g>
+
+  <!-- Top notes -->
+  <text x="690" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569">kₜ 用来读取旧记忆，vₜ 提供当前正确目标</text>
+  <text x="718" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#92400E">αₜ：决定旧记忆保留多少</text>
+  <text x="710" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#6D28D9">βₜ：决定这次修正/写入有多强</text>
+</svg>
